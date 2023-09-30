@@ -7,7 +7,6 @@ public class Movement : MonoBehaviour
     [SerializeField] PlayerInfo _playerInfo;
 
     [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _jumpForce;
     [SerializeField] private bool _jumpAble;
 
     private Rigidbody _rigidbody;
@@ -21,8 +20,11 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _jumpForce = _playerInfo.JumpForce;
 
+    }
+
+    private void FixedUpdate()
+    {
         Move();
         Jump();
     }
@@ -51,16 +53,18 @@ public class Movement : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.Space) && _jumpAble)
         {
-            _rigidbody.velocity = transform.up * _jumpForce;
+            _rigidbody.velocity = transform.up * _playerInfo.JumpForce;
             _jumpAble = false;
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
-        if(collision.gameObject.tag == "Floor")
-        {
-            _jumpAble = true;
-        }
+        _jumpAble = collision.gameObject.tag == "Floor";
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        _jumpAble = false;
     }
 }
