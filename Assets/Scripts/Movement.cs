@@ -7,14 +7,23 @@ public class Movement : MonoBehaviour
     [SerializeField] PlayerInfo _playerInfo;
 
     [SerializeField] private float _moveSpeed;
+    [SerializeField] private float _currentMoveSpeed;
     [SerializeField] private bool _jumpAble;
+    [SerializeField] private bool _isMove;
+
+    private Ability_Water _waterAbility;
 
     private Rigidbody _rigidbody;
+    public float MoveSpeed => _moveSpeed;
+    public bool IsMove => _isMove;
 
     // Start is called before the first frame update
     void Start()
     {
        _rigidbody = gameObject.GetComponent<Rigidbody>();
+       _waterAbility = GetComponent<Ability_Water>();
+
+       _currentMoveSpeed = _moveSpeed;
     }
 
     // Update is called once per frame
@@ -27,25 +36,38 @@ public class Movement : MonoBehaviour
     {
         Move();
         Jump();
+        ElementCheck();
     }
 
     private void Move()
     {
-        if (Input.GetKey(KeyCode.W))
+        float horizontalMove = Input.GetAxisRaw("Horizontal");
+        float verticalMove = Input.GetAxisRaw("Vertical");
+
+        if (horizontalMove > 0)   //D
         {
-            transform.position += transform.forward * _moveSpeed * Time.deltaTime;
+            transform.position += transform.right * _currentMoveSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.S))
+        if(horizontalMove < 0)  //A
         {
-            transform.position += -transform.forward * _moveSpeed * Time.deltaTime;
+            transform.position += -transform.right * _currentMoveSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.D))
+        if(verticalMove > 0)    //W
         {
-            transform.position += transform.right * _moveSpeed * Time.deltaTime;
+            transform.position += transform.forward * _currentMoveSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.A))
+        if(verticalMove < 0)    //S
         {
-            transform.position += -transform.right * _moveSpeed * Time.deltaTime;
+            transform.position += -transform.forward * _currentMoveSpeed * Time.deltaTime;
+        }
+
+        if(horizontalMove != 0 || verticalMove != 0)
+        {
+            _isMove = true;
+        }
+        else
+        {
+            _isMove = false;
         }
     }
 
@@ -53,7 +75,7 @@ public class Movement : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.Space) && _jumpAble)
         {
-            _rigidbody.velocity = transform.up * _playerInfo.JumpForce;
+            _rigidbody.velocity = transform.up * _playerInfo.CurrentJumpForce;
             _jumpAble = false;
         }
     }
@@ -66,5 +88,17 @@ public class Movement : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         _jumpAble = false;
+    }
+
+    private void ElementCheck()
+    {
+        if(_waterAbility.enabled)
+        {
+            _currentMoveSpeed = _waterAbility.WaterMoveSpeed;
+        }
+        else
+        {
+            _currentMoveSpeed = _moveSpeed;
+        }
     }
 }

@@ -19,7 +19,7 @@ public class ElementInfo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        transform.localScale = new Vector3(_weight, _weight, _weight);
     }
 
     // Update is called once per frame
