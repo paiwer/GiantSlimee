@@ -1,54 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
-public class Fall2 : MonoBehaviour
+[CustomEditor(typeof(TagSelector))]
+public class Fall2 : Editor
 {
-    public float damageThreshold = 10f; // Velocity threshold for taking damage
-    public float damageMultiplier = 1f; // Multiplier for damage taken
-
-    private Rigidbody playerRigidbody;
-    private bool isFalling = false;
-
-    private void Start()
+    public override void OnInspectorGUI()
     {
-        playerRigidbody = GetComponent<Rigidbody>();
-    }
+        TagSelector tagSelector = (TagSelector)target;
 
-    private void Update()
-    {
-        // Check if the player is falling (negative vertical velocity)
-        if (playerRigidbody.velocity.y < 0)
-        {
-            // Calculate the falling velocity (positive value)
-            float fallingVelocity = -playerRigidbody.velocity.y;
+        // Get all the tags defined in the project
+        string[] tags = UnityEditorInternal.InternalEditorUtility.tags;
 
-            // Check if the falling velocity exceeds the threshold
-            if (fallingVelocity > damageThreshold)
-            {
-                // Player is falling
-                isFalling = true;
-            }
-        }
-        else
-        {
-            // Player is not falling
-            if (isFalling)
-            {
-                // Calculate the damage based on falling velocity
-                float damage = (playerRigidbody.velocity.y - damageThreshold) * damageMultiplier;
+        // Find the index of the currently selected tag
+        int selectedIndex = Mathf.Max(0, System.Array.IndexOf(tags, tagSelector.selectedTag));
 
-                // Apply damage to the player (you can replace this with your own damage system)
-                ApplyDamage(damage);
+        // Display a dropdown list for selecting tags
+        selectedIndex = EditorGUILayout.Popup("Select Tag", selectedIndex, tags);
 
-                isFalling = false; // Reset the falling flag
-            }
-        }
-    }
-
-    private void ApplyDamage(float damage)
-    {
-        // Replace this with your damage logic (e.g., reducing player health)
-        Debug.Log("Player took " + damage + " damage!");
+        // Update the selected tag based on the dropdown selection
+        tagSelector.selectedTag = tags[selectedIndex];
     }
 }
