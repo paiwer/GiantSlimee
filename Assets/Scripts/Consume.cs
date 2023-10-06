@@ -6,7 +6,6 @@ using System;
 public class Consume : MonoBehaviour
 {
     [SerializeField] private PlayerInfo _playerInfo;
-    [SerializeField] private Ability_Earth _earth;
     [SerializeField] private Ability_Fire _fire;
     [SerializeField] private Ability_Water _water;
     [SerializeField] private Ability_Wind _wind;
@@ -25,6 +24,8 @@ public class Consume : MonoBehaviour
 
     [SerializeField] private List<GameObject> _eatList = new List<GameObject>();
 
+    [SerializeField] private string _tagEatable = "EatAble";
+
     private GameObject _eatElement;
     private ElementInfo _eatElementInfo;
 
@@ -34,7 +35,6 @@ public class Consume : MonoBehaviour
     void Start()
     {
         _playerInfo = gameObject.GetComponent<PlayerInfo>();
-        _earth = GetComponent<Ability_Earth>();
         _fire = GetComponent<Ability_Fire>();
         _water = GetComponent<Ability_Water>();
         _wind = GetComponent<Ability_Wind>();
@@ -75,12 +75,16 @@ public class Consume : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        if(_isOpenMouth && collision.gameObject.tag == "EatAble")
+        if(_isOpenMouth && collision.gameObject.tag == _tagEatable)
         {
             _eatElement = collision.gameObject;
             _eatElementInfo = _eatElement.GetComponent<ElementInfo>();
 
-            _eatList.Add(_eatElement);
+            if(_eatElementInfo.Type != ElementInfo.ElementType.None)
+            {
+                _eatList.Add(_eatElement);
+            }
+
             _eatElement.SetActive(false);
 
             _eatAmount += _eatElementInfo.ElementWeight;
@@ -114,92 +118,60 @@ public class Consume : MonoBehaviour
 
     private void ElementChange()
     {
-        if (_elementInfo1 != null)
-        {
-            if (_elementInfo1.Type == ElementInfo.ElementType.Earth)
-            {
-                _earth.enabled = true;
-            }
-            if (_elementInfo1.Type == ElementInfo.ElementType.Fire)
-            {
-                _fire.enabled = true;
-            }
-            if (_elementInfo1.Type == ElementInfo.ElementType.Water)
-            {
-                _water.enabled = true;
-            }
-            if (_elementInfo1.Type == ElementInfo.ElementType.Wind)
-            {
-                _wind.enabled = true;
-            }
-        }
-
-        if (_elementInfo2 != null)
-        {
-            if (_elementInfo2.Type == ElementInfo.ElementType.Earth)
-            {
-                _earth.enabled = true;
-            }
-            if (_elementInfo2.Type == ElementInfo.ElementType.Fire)
-            {
-                _fire.enabled = true;
-            }
-            if (_elementInfo2.Type == ElementInfo.ElementType.Water)
-            {
-                _water.enabled = true;
-            }
-            if (_elementInfo2.Type == ElementInfo.ElementType.Wind)
-            {
-                _wind.enabled = true;
-            }
-        }
+        ElementSet();
 
         if (_elementInfo1 == null && _elementInfo2 == null)
         {
-            _earth.enabled = false;
-            _fire.enabled = false;
-            _water.enabled = false;
-            _wind.enabled = false;
+            DisableAllElement();
+        }
+    }
+
+    private void DisableAllElement()
+    {
+        _fire.enabled = false;
+        _water.enabled = false;
+        _wind.enabled = false;
+    }
+
+    private void ElementSet()
+    {
+        if (_elementInfo2 != null)      //Have first and second
+        {
+            switch (_elementInfo2.Type)
+            {
+                case ElementInfo.ElementType.Fire:
+                    _fire.enabled = true;
+                    break;
+                case ElementInfo.ElementType.Water:
+                    _water.enabled = true;
+                    break;
+                case ElementInfo.ElementType.Wind:
+                    _wind.enabled = true;
+                    break;
+            }
         }
 
-        if(_elementInfo1 != null && _elementInfo2 == null)
+        if(_elementInfo1 != null && _elementInfo2 == null)  //Have first but no second
         {
-            if (_elementInfo1.Type != ElementInfo.ElementType.Earth)
+            switch (_elementInfo1.Type)
             {
-                _earth.enabled = false;
-            }
-            if (_elementInfo1.Type != ElementInfo.ElementType.Fire)
-            {
-                _fire.enabled = false;
-            }
-            if (_elementInfo1.Type != ElementInfo.ElementType.Water)
-            {
-                _water.enabled = false;
-            }
-            if (_elementInfo1.Type != ElementInfo.ElementType.Wind)
-            {
-                _wind.enabled = false;
+                case ElementInfo.ElementType.Fire:
+                    ElementControl(true, false, false);
+                    break;
+                case ElementInfo.ElementType.Water:
+                    ElementControl(false, true, false);
+                    break;
+                case ElementInfo.ElementType.Wind:
+                    ElementControl(false, false, true);
+                    break;
             }
         }
+    }
 
-        if(_elementInfo1 != null && _elementInfo2 != null)
-        {
-            if(_elementInfo1.Type != ElementInfo.ElementType.Earth && _elementInfo2.Type != ElementInfo.ElementType.Earth)
-            {
-                _earth.enabled = false;
-            }
-            if (_elementInfo1.Type != ElementInfo.ElementType.Fire && _elementInfo2.Type != ElementInfo.ElementType.Fire)
-            {
-                _fire.enabled = false;
-            }
-            if (_elementInfo1.Type != ElementInfo.ElementType.Water && _elementInfo2.Type != ElementInfo.ElementType.Water)
-            {
-                _water.enabled = false;
-            }
-            if (_elementInfo1.Type != ElementInfo.ElementType.Wind && _elementInfo2.Type != ElementInfo.ElementType.Wind)
-            {
-                _wind.enabled = false;
-            }
-        }
+    private void ElementControl(bool fire, bool water, bool wind)
+    {
+        _fire.enabled = fire;
+        _water.enabled = water;
+        _wind.enabled = wind;
     }
 }

@@ -11,6 +11,7 @@ public class FallingDamage : MonoBehaviour
     [SerializeField] private float _damageMultiplier;
     [SerializeField] private bool _onGround;
     [SerializeField] private bool _takeFallDamage;
+    [SerializeField] private string _tagFloor = "Floor";
 
     private float _fallDamage;
 
@@ -41,7 +42,7 @@ public class FallingDamage : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     { 
-        if(collision.gameObject.tag == "Floor")
+        if(collision.gameObject.tag == _tagFloor)
         {
             _onGround = true;
         }

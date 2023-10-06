@@ -10,6 +10,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private float _currentMoveSpeed;
     [SerializeField] private bool _jumpAble;
     [SerializeField] private bool _isMove;
+    [SerializeField] private string _tagFloor = "Floor";
 
     private Ability_Water _waterAbility;
 
@@ -82,7 +83,7 @@ public class Movement : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        _jumpAble = collision.gameObject.tag == "Floor";
+        _jumpAble = collision.gameObject.tag == _tagFloor;
     }
 
     private void OnCollisionExit(Collision collision)
