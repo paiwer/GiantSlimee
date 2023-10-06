@@ -99,7 +99,7 @@ public class PlayerInfo : MonoBehaviour
             {
                 Debug.Log("Take fire damage : " + _fireAbility.FireDamage);
                 _currentHp -= _fireAbility.FireDamage;
-                _fireAbility.BurnObject = false;
+                _fireAbility._TakeFireDamage(false);
             }
         }
 
@@ -109,7 +109,7 @@ public class PlayerInfo : MonoBehaviour
             {
                 Debug.Log("Take water damage : " + _waterAbility.WaterDamage);
                 _currentHp -= _waterAbility.WaterDamage;
-                _waterAbility.TakeWaterDamage = false;
+                _waterAbility._TakeWaterDamage(false);
             }
         }
     }

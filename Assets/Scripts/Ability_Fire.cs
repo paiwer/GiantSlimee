@@ -8,9 +8,11 @@ public class Ability_Fire : MonoBehaviour
     private Consume _consume;
 
     [SerializeField] private float _fireDamage;
-    [SerializeField] public bool BurnObject;
+    [SerializeField] private bool _burnObject;
+    [SerializeField] private string _tagBurnable = "Burnable";
 
     public float FireDamage => _fireDamage;
+    public bool BurnObject => _burnObject;
 
     // Start is called before the first frame update
     void Start()
@@ -29,11 +31,16 @@ public class Ability_Fire : MonoBehaviour
     {
         if (this.enabled)
         {
-            if (collision.gameObject.tag == "Burnable")
+            if (collision.gameObject.tag == _tagBurnable)
             {
-                BurnObject = true;
+                _burnObject = true;
                 collision.gameObject.SetActive(false);
             }
         }
+    }
+
+    public void _TakeFireDamage(bool takeDamage)
+    {
+        _burnObject = takeDamage;
     }
 }

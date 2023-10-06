@@ -9,7 +9,7 @@ public class ElementInfo : MonoBehaviour
         Fire,
         Water,
         Wind,
-        Earth,
+        None,
     }
     public ElementType Type;
 

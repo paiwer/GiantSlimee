@@ -11,12 +11,13 @@ public class Ability_Water : MonoBehaviour
     [SerializeField] private float _waterMoveSpeed;
     [SerializeField] private float _waterDamage;
     [SerializeField] private float _timeThreshold;
-    [SerializeField] public bool TakeWaterDamage;
+    [SerializeField] private bool _takeWaterDamage;
 
     private float _timeCount;
 
     public float WaterMoveSpeed => _waterMoveSpeed;
     public float WaterDamage => _waterDamage;
+    public bool TakeWaterDamage => _takeWaterDamage;
 
     // Start is called before the first frame update
     void Start()
@@ -42,9 +43,14 @@ public class Ability_Water : MonoBehaviour
 
             if(_timeCount >= _timeThreshold)
             {
-                TakeWaterDamage = true;
+                _takeWaterDamage = true;
                 _timeCount = 0;
             }
         }
+    }
+
+    public void _TakeWaterDamage(bool takedamage)
+    {
+        _takeWaterDamage = takedamage;
     }
 }
