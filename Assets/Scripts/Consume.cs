@@ -29,6 +29,9 @@ public class Consume : MonoBehaviour
     private GameObject _eatElement;
     private ElementInfo _eatElementInfo;
 
+    public ElementInfo ElementInfo1 => _elementInfo1;
+    public ElementInfo ElementInfo2 => _elementInfo2;
+
     public float EatAmount => _eatAmount;
 
     // Start is called before the first frame update
