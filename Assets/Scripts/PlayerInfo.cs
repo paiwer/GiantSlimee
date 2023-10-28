@@ -24,6 +24,8 @@ public class PlayerInfo : MonoBehaviour
     public float CurrentSize => _currectSizeNumber;
     public float JumpForce => _jumpForce;
     public float CurrentJumpForce => _currentJumpForce;
+    public float MaxHP => _hp;
+    public float CurrentHP => _currentHp;
 
     // Start is called before the first frame update
     void Start()
