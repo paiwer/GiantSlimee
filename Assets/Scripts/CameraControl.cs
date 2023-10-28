@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Camera : MonoBehaviour
+public class CameraControl : MonoBehaviour
 {
     [SerializeField] private float _mouseSpeedVer = 0f;
     [SerializeField] private float _mouseSpeedHor = 0f;
