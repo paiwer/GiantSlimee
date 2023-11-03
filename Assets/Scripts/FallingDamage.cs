@@ -34,7 +34,12 @@ public class FallingDamage : MonoBehaviour
             _takeFallDamage = true;
         }
 
-        if(_onGround && _takeFallDamage)
+        if(_takeFallDamage && _rigidbody.velocity.y > 0)    //case keep jump on jump pad
+        {
+            _takeFallDamage = false;
+        }
+
+        if(_onGround && _takeFallDamage)    //Take damage
         {
             _takeFallDamage = false;
         }
