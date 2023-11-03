@@ -9,6 +9,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _currentMoveSpeed;
     [SerializeField] private bool _jumpAble;
+    [SerializeField] private bool _isJump;
     [SerializeField] private bool _isMove;
     [SerializeField] private string _tagFloor = "Floor";
 
@@ -17,6 +18,7 @@ public class Movement : MonoBehaviour
     private Rigidbody _rigidbody;
     public float MoveSpeed => _moveSpeed;
     public bool IsMove => _isMove;
+    public bool IsJump => _isJump;
 
     // Start is called before the first frame update
     void Start()
@@ -78,6 +80,16 @@ public class Movement : MonoBehaviour
         {
             _rigidbody.velocity = transform.up * _playerInfo.CurrentJumpForce;
             _jumpAble = false;
+        }
+
+        if(_rigidbody.velocity.y > 0)   //While up
+        {
+            _isJump = true;
+        }
+
+        if(_rigidbody.velocity.y <= 0)  //While fall
+        {
+            _isJump = false;
         }
     }
 
