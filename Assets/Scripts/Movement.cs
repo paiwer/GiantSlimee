@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] PlayerInfo _playerInfo;
+    [SerializeField] private PlayerInfo _playerInfo;
 
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _currentMoveSpeed;
     [SerializeField] private bool _jumpAble;
     [SerializeField] private bool _isJump;
     [SerializeField] private bool _isMove;
-    [SerializeField] private string _tagFloor = "Floor";
+    [SerializeField] private float _groundCheckDistance = 1;
+
+    [SerializeField] private LayerMask _groundLayer;
 
     private Ability_Water _waterAbility;
 
@@ -19,6 +21,8 @@ public class Movement : MonoBehaviour
     public float MoveSpeed => _moveSpeed;
     public bool IsMove => _isMove;
     public bool IsJump => _isJump;
+    public bool JumpAble => _jumpAble;
+
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +36,7 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        GroundCheck();
     }
 
     private void FixedUpdate()
@@ -93,16 +97,6 @@ public class Movement : MonoBehaviour
         }
     }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        _jumpAble = collision.gameObject.tag == _tagFloor;
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-        _jumpAble = false;
-    }
-
     private void ElementCheck()
     {
         if(_waterAbility.enabled)
@@ -113,5 +107,15 @@ public class Movement : MonoBehaviour
         {
             _currentMoveSpeed = _moveSpeed;
         }
+    }
+
+    private void GroundCheck()
+    {
+        float currentDistance = _groundCheckDistance * _playerInfo.CurrentSize;
+
+        RaycastHit hit;
+        _jumpAble = Physics.Raycast(transform.position, Vector3.down, out hit, currentDistance, _groundLayer);
+
+        Debug.DrawRay(transform.position, Vector3.down * currentDistance, Color.red);  //Draw line
     }
 }
