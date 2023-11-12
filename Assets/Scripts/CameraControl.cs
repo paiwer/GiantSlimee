@@ -26,12 +26,11 @@ public class CameraControl : MonoBehaviour
     private RaycastHit _obstacleHit;
     private PlayerInfo _playerInfo;
     private float _changedArmLength;
-    [SerializeField] private bool _hitObstacle;
+    private bool _hitObstacle;
 
     // Start is called before the first frame update
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
         _playerInfo = GetComponent<PlayerInfo>();
         _changedArmLength = _armLength;
     }
