@@ -5,9 +5,10 @@ using UnityEngine;
 public class WinPlate : MonoBehaviour
 {
     [SerializeField] private string _tagPlayer = "Player";
-    [SerializeField] private float _requireSize;
+    [SerializeField] private int _requireNumber;
     [SerializeField] private float _animSpeed = 1f;
     [SerializeField] private float _distance;
+    [SerializeField] private bool _isWin;
 
     private Consume _consume;
 
@@ -16,6 +17,8 @@ public class WinPlate : MonoBehaviour
 
     private float _upTime;
     private float _upDelay = 0.5f;
+
+    public bool IsWin => _isWin;
 
     // Start is called before the first frame update
     void Start()
@@ -38,9 +41,9 @@ public class WinPlate : MonoBehaviour
     {
         if(collision.gameObject.tag == _tagPlayer)
         {
-            if (_consume.EatAmount > _requireSize)
+            if (_consume.GemNumber >= _requireNumber)
             {
-                Debug.Log("Win!");
+                _isWin = true;
             }
         }
     }
