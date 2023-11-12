@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class FallingDamage : MonoBehaviour
 {
-    private PlayerInfo _playerInfo;
     private Rigidbody _rigidbody;
 
-    [SerializeField] private float _fallingThreshold;
-    [SerializeField] private float _damageMultiplier;
+    [SerializeField] private float _fallingThreshold = 12;
+    [SerializeField] private float _damageMultiplier = 5;
     [SerializeField] private bool _onGround;
     [SerializeField] private bool _takeFallDamage;
     [SerializeField] private string _tagFloor = "Floor";
@@ -34,12 +33,7 @@ public class FallingDamage : MonoBehaviour
             _takeFallDamage = true;
         }
 
-        if(_takeFallDamage && _rigidbody.velocity.y > 0)    //case keep jump on jump pad
-        {
-            _takeFallDamage = false;
-        }
-
-        if(_onGround && _takeFallDamage)    //Take damage
+        if(_takeFallDamage && _rigidbody.velocity.y > 1)    //case keep jump on jump pad
         {
             _takeFallDamage = false;
         }
@@ -56,5 +50,10 @@ public class FallingDamage : MonoBehaviour
     private void OnCollisionExit(Collision collision)
     {
         _onGround = false;
+    }
+
+    public void _TakeFallDamage(bool isTakeDamage)
+    {
+        _takeFallDamage = isTakeDamage;
     }
 }
