@@ -20,7 +20,9 @@ public class Consume : MonoBehaviour
 
     [SerializeField] private float _dropDistance;
 
-    [SerializeField] private float _eatAmount;
+    [SerializeField] private float _eatAmount = 1f;
+
+    [SerializeField] private int _gemNumber = 0;
 
     [SerializeField] private List<GameObject> _eatList = new List<GameObject>();
 
@@ -33,6 +35,8 @@ public class Consume : MonoBehaviour
     public ElementInfo ElementInfo2 => _elementInfo2;
 
     public float EatAmount => _eatAmount;
+
+    public int GemNumber => _gemNumber;
 
     // Start is called before the first frame update
     void Start()
@@ -83,14 +87,11 @@ public class Consume : MonoBehaviour
             _eatElement = collision.gameObject;
             _eatElementInfo = _eatElement.GetComponent<ElementInfo>();
 
-            if(_eatElementInfo.Type != ElementInfo.ElementType.None)
-            {
-                _eatList.Add(_eatElement);
-            }
+            EatAmountUpdate();
 
             _eatElement.SetActive(false);
 
-            _eatAmount += _eatElementInfo.ElementWeight;
+            
         }
     }
 
@@ -176,5 +177,19 @@ public class Consume : MonoBehaviour
         _fire.enabled = fire;
         _water.enabled = water;
         _wind.enabled = wind;
+    }
+
+    private void EatAmountUpdate()
+    {
+        if (_eatElementInfo.Type != ElementInfo.ElementType.None)
+        {
+            _eatList.Add(_eatElement);
+            _eatAmount += _eatElementInfo.ElementWeight;
+        }
+
+        if (_eatElementInfo.Type == ElementInfo.ElementType.None)
+        {
+            _gemNumber += 1;
+        }
     }
 }
