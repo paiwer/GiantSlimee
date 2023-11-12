@@ -14,8 +14,11 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField] private float _eatAmount;
     [SerializeField] private bool _isDead;
 
+    private float _healNumber;
+
     private Vector3 _size;
 
+    private Heal _healScript;
     private FallingDamage _fallScript;
     private Ability_Wind _windAbility;
     private Ability_Fire _fireAbility;
@@ -26,10 +29,12 @@ public class PlayerInfo : MonoBehaviour
     public float CurrentJumpForce => _currentJumpForce;
     public float MaxHP => _hp;
     public float CurrentHP => _currentHp;
+    public bool IsDead => _isDead;
 
     // Start is called before the first frame update
     void Start()
     {
+        _healScript = GetComponent<Heal>();
         _fallScript = GetComponent<FallingDamage>();
         _windAbility = GetComponent<Ability_Wind>();
         _fireAbility = GetComponent<Ability_Fire>();
@@ -45,31 +50,20 @@ public class PlayerInfo : MonoBehaviour
         SizeCalculate();
         TakeFallDamage();
         ElementCheck();
+        Heal();
 
         if (_currentHp <= 0)
         {
             _isDead = true;
-            Debug.Log("Dead");
         }
-    }
-
-    private void FixedUpdate()
-    {
-
     }
 
     private void SizeCalculate()
     {
         _eatAmount = GetComponent<Consume>().EatAmount;
 
-        if(_eatAmount == 0)
-        {
-            _currectSizeNumber = _standardSize;
-        }
-        else
-        {
-            _currectSizeNumber = _eatAmount + 1;
-        }
+        _currectSizeNumber = _eatAmount;
+
         _size = new Vector3(_currectSizeNumber, _currectSizeNumber, _currectSizeNumber);
 
         transform.localScale = _size;
@@ -80,7 +74,7 @@ public class PlayerInfo : MonoBehaviour
         if(_fallScript.TakeFallDamage && _fallScript.OnGround)
         {
             _currentHp -= _fallScript.FallDamage;
-            Debug.Log("HP : " + _currentHp + " / " + _hp);
+            _fallScript._TakeFallDamage(false);
         }
     }
 
@@ -113,6 +107,23 @@ public class PlayerInfo : MonoBehaviour
                 _currentHp -= _waterAbility.WaterDamage;
                 _waterAbility._TakeWaterDamage(false);
             }
+        }
+    }
+
+    private void Heal()
+    {
+        if(_healScript.IsHeal)
+        {
+            _healNumber = _healScript.HealAmount;
+            _currentHp += _healNumber;
+
+            if(_currentHp > _hp)    // Prevent _currentHp > max hp
+            {
+                float difference = _currentHp - _hp;
+                _currentHp -= difference;
+            }
+
+            _healScript._Heal(false);
         }
     }
 }
