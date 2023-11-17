@@ -25,6 +25,7 @@ public class CameraControl : MonoBehaviour
 
     private RaycastHit _obstacleHit;
     private PlayerInfo _playerInfo;
+    private UIManager _uiManager;
     private float _changedArmLength;
     private bool _hitObstacle;
 
@@ -32,6 +33,7 @@ public class CameraControl : MonoBehaviour
     void Start()
     {
         _playerInfo = GetComponent<PlayerInfo>();
+        _uiManager = FindObjectOfType<UIManager>();
         _changedArmLength = _armLength;
     }
 
@@ -44,6 +46,11 @@ public class CameraControl : MonoBehaviour
 
     private void RotateFollowMouse()
     {
+        if (_uiManager.IsPaused)
+        {
+            return;
+        }
+
         _rotationX += Input.GetAxis("Mouse X") * _mouseSpeedHor;
         _rotationY += Input.GetAxis("Mouse Y") * _mouseSpeedVer;
 

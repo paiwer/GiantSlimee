@@ -5,22 +5,25 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private PlayerInfo _playerInfoScript;
-    [SerializeField] private WinPlate _winPlateScript;
     [SerializeField] private GameObject _gameOverUI;
     [SerializeField] private GameObject _winUI;
     [SerializeField] private GameObject _pauseUI;
     [SerializeField] private string _mainMenuSceneName = "MainMenu";
 
-    public bool _isPaused = false;
+    private PlayerInfo _playerInfoScript;
+    private WinPlate _winPlateScript;
+
+    private bool _isPaused = false;
+    public bool IsPaused => _isPaused;
 
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+
         _playerInfoScript = FindObjectOfType<PlayerInfo>();
         _winPlateScript = FindObjectOfType<WinPlate>();
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -31,9 +34,7 @@ public class UIManager : MonoBehaviour
             Pause();
         }
 
-        //Debug.Log(Time.timeScale);
-
-        //GameOverUI();
+        GameOverUI();
         WinUI();
     }
 
@@ -41,7 +42,7 @@ public class UIManager : MonoBehaviour
     {
         if(_playerInfoScript.IsDead)
         {
-            SetGameOverMenu(true, 0);
+            SetMenu(_gameOverUI, true, true, 0, CursorLockMode.None);
         }
     }
 
@@ -49,40 +50,33 @@ public class UIManager : MonoBehaviour
     {
         if (_winPlateScript.IsWin)
         {
-            SetWinMenu(true, 0);
+            SetMenu(_winUI, true, true, 0, CursorLockMode.None);
         }
     }
 
     private void Pause()
     {
-        if(!_gameOverUI.activeSelf) //didn't active
+        if(!_gameOverUI.activeSelf && !_winUI.activeSelf) //didn't active
         {
-            if(!_winUI.activeSelf)
+            if (_isPaused)
             {
-                _isPaused = !_isPaused;
-
-                if (_isPaused)
-                {
-                    SetPauseMenu(true, 0);
-                }
-                else
-                {
-                    SetPauseMenu(false, 1);
-                }
+                SetMenu(_pauseUI, false, false, 1, CursorLockMode.Locked);
+            }
+            else
+            {
+                SetMenu(_pauseUI, true, true, 0, CursorLockMode.None);
             }
         }
     }
 
     public void Restart()
     {
-        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void Resume()
     {
-        SetPauseMenu(false, 1);
-        _isPaused = false;
+        SetMenu(_pauseUI, false, false, 1, CursorLockMode.Locked);
     }
 
     public void BackToMenu()
@@ -90,21 +84,11 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene(_mainMenuSceneName);
     }
 
-    private void SetPauseMenu(bool active, float timeScale)
+    private void SetMenu(GameObject ui, bool active, bool pause, float timeScale, CursorLockMode cursorLockMode)
     {
-        _pauseUI.SetActive(active);
+        ui.SetActive(active);
+        _isPaused = pause;
         Time.timeScale = timeScale;
-    }
-
-    private void SetWinMenu(bool active, float timeScale)
-    {
-        _winUI.SetActive(active);
-        Time.timeScale = timeScale;
-    }
-
-    private void SetGameOverMenu(bool active, float timeScale)
-    {
-        _gameOverUI.SetActive(active);
-        Time.timeScale = timeScale;
+        Cursor.lockState = cursorLockMode;
     }
 }
