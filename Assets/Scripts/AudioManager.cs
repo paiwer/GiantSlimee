@@ -1,47 +1,78 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class AudioManager : MonoBehaviour
 {
-    [SerializeField] private Sound[] _sfx;
-    [SerializeField] private AudioSource _sfxSource;
+    public static AudioManager Instance;
 
-    [SerializeField] private AudioClip _jumpSFX;
-    [SerializeField] private AudioClip _fallSFX;
-    [SerializeField] private AudioClip _eatSFX;
-    [SerializeField] private AudioClip _gemSFX;
-    [SerializeField] private AudioClip _spitSFX;
-    [SerializeField] private AudioClip _winSFX;
+    [SerializeField] private Sound[] _sfxSound, _musicSound;
+    [SerializeField] private AudioSource _sfxSource, _musicSource;
 
-    [SerializeField] private Consume _consumeScript;
-    [SerializeField] private Movement _movementScript;
-    [SerializeField] private WinPlate _winPlateScript;
+    public AudioSource SfxSource => _sfxSource;
+    public AudioSource MusicSource => _musicSource;
 
-    // Start is called before the first frame update
-    void Start()
+    [Header("Sound")]
+    [SerializeField] private string _music01 = "BG01";
+
+    private void Awake()
     {
-        _consumeScript = FindObjectOfType<Consume>();
-        _movementScript = FindObjectOfType<Movement>();
-        _winPlateScript = FindObjectOfType<WinPlate>();
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void Start()
+    {
+        PlayMusic(_music01);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.F))
-        {
-            _sfxSource.clip = _spitSFX;
-            _sfxSource.Play();
-        }
+        AudioSourceVolume();
+    }
 
-        if (_movementScript.IsJump)
-        {
-            _sfxSource.clip = _jumpSFX;
-            //_sfxSource.Play();
-            _sfxSource.PlayOneShot(_sfxSource.clip);
-        }
+    public void PlaySFX(string name)
+    {
+        Sound sound = Array.Find(_sfxSound, x=> x.Name == name);
 
+        if(sound == null)
+        {
+            Debug.Log("Sound Not Found");
+        }
+        else
+        {
+            _sfxSource.PlayOneShot(sound.AudioClip);
+        }
+    }
+
+    public void PlayMusic(string name)
+    {
+        Sound sound = Array.Find(_musicSound, x => x.Name == name);
+
+        if (sound == null)
+        {
+            Debug.Log("Sound Not Found");
+        }
+        else
+        {
+            _musicSource.clip = sound.AudioClip;
+            _musicSource.Play();
+        }
+    }
+
+    private void AudioSourceVolume()
+    {
+        _sfxSource.volume = UIAudioSlider.Instance.EffectVolume;
+        _musicSource.volume = UIAudioSlider.Instance.MusicVolume;
     }
 }
 
@@ -50,5 +81,8 @@ public class Sound
 {
     [SerializeField] private string _name;
     [SerializeField] private AudioClip _audioClip;
+
+    public string Name => _name;
+    public AudioClip AudioClip => _audioClip;
 }
 

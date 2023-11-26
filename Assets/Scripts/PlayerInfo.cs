@@ -14,6 +14,9 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField] private float _eatAmount;
     [SerializeField] private bool _isDead;
 
+    [Header("Sound")]
+    [SerializeField] private string _dieSound = "Die";
+
     private float _healNumber;
 
     private Vector3 _size;
@@ -55,6 +58,8 @@ public class PlayerInfo : MonoBehaviour
         if (_currentHp <= 0)
         {
             _isDead = true;
+
+            AudioManager.Instance.PlaySFX(_dieSound);
         }
     }
 

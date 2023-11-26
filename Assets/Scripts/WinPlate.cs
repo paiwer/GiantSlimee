@@ -10,6 +10,9 @@ public class WinPlate : MonoBehaviour
     [SerializeField] private float _distance;
     [SerializeField] private bool _isWin;
 
+    [Header("Sound")]
+    [SerializeField] private string _victorySound = "Victory";
+
     private Consume _consume;
 
     private Vector3 _originalPosition;
@@ -44,6 +47,8 @@ public class WinPlate : MonoBehaviour
             if (_consume.GemNumber >= _requireNumber)
             {
                 _isWin = true;
+
+                AudioManager.Instance.PlaySFX(_victorySound);
             }
         }
     }

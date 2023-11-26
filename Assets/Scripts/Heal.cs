@@ -7,6 +7,9 @@ public class Heal : MonoBehaviour
     [SerializeField] private HealPad _healPad;
     [SerializeField] private float _healAmount;
 
+    [Header("Sound")]
+    [SerializeField] private string _healSound = "Heal";
+
     private bool _isHeal;
 
     public float HealAmount => _healAmount;
@@ -32,6 +35,8 @@ public class Heal : MonoBehaviour
         {
             _healAmount = _healPad.HealAmount;
             _Heal(true);
+
+            AudioManager.Instance.PlaySFX(_healSound);
         }
     }
 

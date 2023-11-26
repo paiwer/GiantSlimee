@@ -28,6 +28,11 @@ public class Consume : MonoBehaviour
 
     [SerializeField] private string _tagEatable = "EatAble";
 
+    [Header("Sound")]
+    [SerializeField] private string _eatSound = "Eat";
+    [SerializeField] private string _eatGemSound = "EatGem";
+    [SerializeField] private string _splitSound = "Split";
+
     private GameObject _eatElement;
     private ElementInfo _eatElementInfo;
 
@@ -77,6 +82,8 @@ public class Consume : MonoBehaviour
             _eatList.Remove(lastestElement);
 
             _eatAmount -= lastestElementInfo.ElementWeight;
+
+            AudioManager.Instance.PlaySFX(_splitSound);
         }
     }
 
@@ -90,8 +97,6 @@ public class Consume : MonoBehaviour
             EatAmountUpdate();
 
             _eatElement.SetActive(false);
-
-            
         }
     }
 
@@ -185,11 +190,15 @@ public class Consume : MonoBehaviour
         {
             _eatList.Add(_eatElement);
             _eatAmount += _eatElementInfo.ElementWeight;
+
+            AudioManager.Instance.PlaySFX(_eatSound);
         }
 
         if (_eatElementInfo.Type == ElementInfo.ElementType.None)
         {
             _gemNumber += 1;
+
+            AudioManager.Instance.PlaySFX(_eatGemSound);
         }
     }
 }

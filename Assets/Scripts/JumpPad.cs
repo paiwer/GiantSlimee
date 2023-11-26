@@ -7,6 +7,9 @@ public class JumpPad : MonoBehaviour
     [SerializeField] private string _tagPlayer = "Player";
     [SerializeField] private float _jumpForce;
 
+    [Header("Sound")]
+    [SerializeField] private string _jumpPadSound = "JumpPad";
+
     private Rigidbody _rb;
 
     // Start is called before the first frame update
@@ -29,6 +32,8 @@ public class JumpPad : MonoBehaviour
             _rb = player.GetComponent<Rigidbody>();
 
             LaunchPlayer();
+
+            AudioManager.Instance.PlaySFX(_jumpPadSound);
         }
     }
 

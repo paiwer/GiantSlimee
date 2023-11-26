@@ -15,6 +15,9 @@ public class Movement : MonoBehaviour
 
     [SerializeField] private LayerMask _groundLayer;
 
+    [Header("Sound")]
+    [SerializeField] private string _jumpSound = "Jump";
+
     private Ability_Water _waterAbility;
 
     private Rigidbody _rigidbody;
@@ -37,12 +40,13 @@ public class Movement : MonoBehaviour
     void Update()
     {
         GroundCheck();
+        Jump();
     }
 
     private void FixedUpdate()
     {
         Move();
-        Jump();
+
         ElementCheck();
     }
 
@@ -80,10 +84,12 @@ public class Movement : MonoBehaviour
 
     private void Jump()
     {
-        if(Input.GetKey(KeyCode.Space) && _jumpAble)
+        if(Input.GetKeyDown(KeyCode.Space) && _jumpAble)
         {
             _rigidbody.velocity = transform.up * _playerInfo.CurrentJumpForce;
             _jumpAble = false;
+
+            AudioManager.Instance.PlaySFX(_jumpSound);
         }
 
         if(_rigidbody.velocity.y > 0)   //While up
