@@ -11,6 +11,9 @@ public class Ability_Fire : MonoBehaviour
     [SerializeField] private bool _burnObject;
     [SerializeField] private string _tagBurnable = "Burnable";
 
+    [Header("Sound")]
+    [SerializeField] private string _burnSound = "Burn";
+
     public float FireDamage => _fireDamage;
     public bool BurnObject => _burnObject;
 
@@ -35,6 +38,8 @@ public class Ability_Fire : MonoBehaviour
             {
                 _burnObject = true;
                 collision.gameObject.SetActive(false);
+
+                AudioManager.Instance.PlaySFX(_burnSound);
             }
         }
     }
