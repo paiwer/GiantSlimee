@@ -2,47 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class UIAudioSlider : MonoBehaviour
 {
-    public static UIAudioSlider Instance;
+    [SerializeField] private AudioMixer _audioMixer;
 
-    [SerializeField] private Slider _effectSlider;
-    [SerializeField] private GameObject _effectSliderGO;
-    [SerializeField] private Slider _musicSlider;
-    [SerializeField] private GameObject _musicSliderGO;
+    [SerializeField] private Slider _slider;
+    [SerializeField] private string _volumeParameter = "Volume";
 
-    [SerializeField] private float _effectSliderValue;
-    [SerializeField] private float _musicSliderValue;
-
-    public float EffectVolume => _effectSliderValue;
-    public float MusicVolume => _musicSliderValue;
+    [SerializeField] private float _volumeMulti = 20f;
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        _audioMixer.GetFloat(_volumeParameter, out float currentVolume);
+        _slider.SetValueWithoutNotify(Mathf.Pow(10, currentVolume / _volumeMulti));
+        _slider.onValueChanged.AddListener(SliderValueChange);
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void SliderValueChange(float value)
     {
-        _effectSliderGO = GameObject.FindWithTag("Test");
-        _effectSlider = _effectSliderGO.GetComponent<Slider>();
+        _audioMixer.SetFloat(_volumeParameter, Mathf.Log10(value) * _volumeMulti);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDestroy()
     {
-        //_effectSliderValue = _effectSlider.value;
-        _musicSliderValue = _musicSlider.value;
-        _effectSlider.value = _effectSliderValue;
+        _slider.onValueChanged.RemoveListener(SliderValueChange);
     }
 }

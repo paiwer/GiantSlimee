@@ -34,10 +34,12 @@ public class AudioManager : MonoBehaviour
         PlayMusic(_music01);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        AudioSourceVolume();
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            PlaySFX("Jump");
+        }
     }
 
     public void PlaySFX(string name)
@@ -67,12 +69,6 @@ public class AudioManager : MonoBehaviour
             _musicSource.clip = sound.AudioClip;
             _musicSource.Play();
         }
-    }
-
-    private void AudioSourceVolume()
-    {
-        _sfxSource.volume = UIAudioSlider.Instance.EffectVolume;
-        _musicSource.volume = UIAudioSlider.Instance.MusicVolume;
     }
 }
 
