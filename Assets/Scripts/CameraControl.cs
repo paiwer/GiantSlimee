@@ -14,7 +14,6 @@ public class CameraControl : MonoBehaviour
 
     private float _rotationX;
     private float _rotationY;
-    private float _camRotateY;
 
     [SerializeField] private float _armLength = 5f;
 
@@ -53,11 +52,10 @@ public class CameraControl : MonoBehaviour
 
         _rotationX += Input.GetAxis("Mouse X") * _mouseSpeedHor;
         _rotationY += Input.GetAxis("Mouse Y") * _mouseSpeedVer;
-
-        _camRotateY = Mathf.Clamp(_rotationY, _minRotate, _maxRotate);
+        _rotationY = Mathf.Clamp(_rotationY, _minRotate, _maxRotate);
 
         transform.rotation = Quaternion.Euler(0, _rotationX, 0);
-        _camPivot.rotation = Quaternion.Euler(-_camRotateY, _rotationX, 0);
+        _camPivot.rotation = Quaternion.Euler(-_rotationY, _rotationX, 0);
     }
 
     private void CameraHitObstacleCheck()
