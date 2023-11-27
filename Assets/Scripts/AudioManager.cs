@@ -34,14 +34,6 @@ public class AudioManager : MonoBehaviour
         PlayMusic(_music01);
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            PlaySFX("Jump");
-        }
-    }
-
     public void PlaySFX(string name)
     {
         Sound sound = Array.Find(_sfxSound, x=> x.Name == name);
