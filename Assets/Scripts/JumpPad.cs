@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class JumpPad : MonoBehaviour
 {
-    [SerializeField] private string _tagPlayer = "Player";
+    [SerializeField] const string _tagPlayer = "Player";
     [SerializeField] private float _jumpForce;
 
     [Header("Sound")]

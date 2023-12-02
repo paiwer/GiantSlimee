@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5974754996512114133}
   - component: {fileID: 5934995896479023089}
   - component: {fileID: 5974754996512114132}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: JumpPad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,3 +113,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _tagPlayer: Player
   _jumpForce: 20
+  _jumpPadSound: JumpPad
