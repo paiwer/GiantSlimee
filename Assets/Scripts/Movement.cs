@@ -8,12 +8,14 @@ public class Movement : MonoBehaviour
 
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _currentMoveSpeed;
-    [SerializeField] private bool _jumpAble;
+    [SerializeField] private bool _onGround;
+    [SerializeField] private bool _onJumpPad;
     [SerializeField] private bool _isJump;
     [SerializeField] private bool _isMove;
     [SerializeField] private float _groundCheckDistance = 1;
 
     [SerializeField] private LayerMask _groundLayer;
+    [SerializeField] private LayerMask _jumpPadLayer;
 
     [Header("Sound")]
     [SerializeField] private string _jumpSound = "Jump";
@@ -24,7 +26,8 @@ public class Movement : MonoBehaviour
     public float MoveSpeed => _moveSpeed;
     public bool IsMove => _isMove;
     public bool IsJump => _isJump;
-    public bool JumpAble => _jumpAble;
+    public bool OnGround => _onGround;
+    public bool OnJumpPad => _onJumpPad;
 
 
     // Start is called before the first frame update
@@ -84,10 +87,9 @@ public class Movement : MonoBehaviour
 
     private void Jump()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && _jumpAble)
+        if(Input.GetKeyDown(KeyCode.Space) && _onGround)
         {
             _rigidbody.velocity = transform.up * _playerInfo.CurrentJumpForce;
-            _jumpAble = false;
 
             AudioManager.Instance.PlaySFX(_jumpSound);
         }
@@ -120,7 +122,9 @@ public class Movement : MonoBehaviour
         float currentDistance = _groundCheckDistance * _playerInfo.CurrentSize;
 
         RaycastHit hit;
-        _jumpAble = Physics.Raycast(transform.position, Vector3.down, out hit, currentDistance, _groundLayer);
+        _onGround = Physics.Raycast(transform.position, Vector3.down, out hit, currentDistance, _groundLayer);
+
+        _onJumpPad = Physics.Raycast(transform.position, Vector3.down, out hit, currentDistance, _jumpPadLayer);
 
         Debug.DrawRay(transform.position, Vector3.down * currentDistance, Color.red);  //Draw line
     }

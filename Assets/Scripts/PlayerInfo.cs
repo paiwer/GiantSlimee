@@ -23,9 +23,12 @@ public class PlayerInfo : MonoBehaviour
 
     private Heal _healScript;
     private FallingDamage _fallScript;
+    private Movement _moveScript;
     private Ability_Wind _windAbility;
     private Ability_Fire _fireAbility;
     private Ability_Water _waterAbility;
+
+    bool _playDieSound = true;
 
     public float CurrentSize => _currectSizeNumber;
     public float JumpForce => _jumpForce;
@@ -39,6 +42,7 @@ public class PlayerInfo : MonoBehaviour
     {
         _healScript = GetComponent<Heal>();
         _fallScript = GetComponent<FallingDamage>();
+        _moveScript = GetComponent<Movement>();
         _windAbility = GetComponent<Ability_Wind>();
         _fireAbility = GetComponent<Ability_Fire>();
         _waterAbility = GetComponent<Ability_Water>();
@@ -51,7 +55,6 @@ public class PlayerInfo : MonoBehaviour
     void Update()
     {
         SizeCalculate();
-        TakeFallDamage();
         ElementCheck();
         Heal();
 
@@ -59,8 +62,17 @@ public class PlayerInfo : MonoBehaviour
         {
             _isDead = true;
 
-            AudioManager.Instance.PlaySFX(_dieSound);
+            if(_playDieSound)
+            {
+                AudioManager.Instance.PlaySFX(_dieSound);
+                _playDieSound = false;
+            }
         }
+    }
+
+    private void FixedUpdate()
+    {
+        TakeFallDamage();
     }
 
     private void SizeCalculate()
@@ -76,10 +88,10 @@ public class PlayerInfo : MonoBehaviour
 
     private void TakeFallDamage()
     {
-        if(_fallScript.TakeFallDamage && _fallScript.OnGround)
+        if (_fallScript.TakeFallDamage && _moveScript.OnGround)
         {
+            _fallScript._IsTakeFallDamage(false);
             _currentHp -= _fallScript.FallDamage;
-            _fallScript._TakeFallDamage(false);
         }
     }
 
