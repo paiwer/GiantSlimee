@@ -6,6 +6,8 @@ public class Movement : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _currentMoveSpeed;
+    [SerializeField] private float _jumpForce = 0;
+    [SerializeField] private float _currentJumpForce = 0;
     [SerializeField] private bool _onGround;
     [SerializeField] private bool _onJumpPad;
     [SerializeField] private bool _isJump;
@@ -19,6 +21,7 @@ public class Movement : MonoBehaviour
     [SerializeField] private string _jumpSound = "Jump";
 
     private Ability_Water _waterAbility;
+    private Ability_Wind _windAbility;
     private PlayerInfo _playerInfo;
     private Rigidbody _rigidbody;
 
@@ -27,16 +30,18 @@ public class Movement : MonoBehaviour
     public bool IsJump => _isJump;
     public bool OnGround => _onGround;
     public bool OnJumpPad => _onJumpPad;
-
+    public float JumpForce => _jumpForce;
 
     // Start is called before the first frame update
     void Start()
     {
        _rigidbody = gameObject.GetComponent<Rigidbody>();
        _waterAbility = GetComponent<Ability_Water>();
+       _windAbility = GetComponent<Ability_Wind>();
        _playerInfo = GetComponent<PlayerInfo>();
 
         _currentMoveSpeed = _moveSpeed;
+        _currentJumpForce = _jumpForce;
     }
 
     // Update is called once per frame
@@ -89,7 +94,7 @@ public class Movement : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Space) && _onGround)
         {
-            _rigidbody.velocity = transform.up * _playerInfo.CurrentJumpForce;
+            _rigidbody.velocity = transform.up * _currentJumpForce;
 
             AudioManager.Instance.PlaySFX(_jumpSound);
         }
@@ -114,6 +119,15 @@ public class Movement : MonoBehaviour
         else
         {
             _currentMoveSpeed = _moveSpeed;
+        }
+
+        if (_windAbility.enabled)    //update jump force -> wind effect
+        {
+            _currentJumpForce = _windAbility.WindJumpForce;
+        }
+        else
+        {
+            _currentJumpForce = _jumpForce;
         }
     }
 

@@ -6,8 +6,7 @@ public class PlayerInfo : MonoBehaviour
 {
     [SerializeField] private float _hp = 0;
     [SerializeField] private float _currentHp = 0;
-    [SerializeField] private float _jumpForce = 0;
-    [SerializeField] private float _currentJumpForce = 0;
+
     [SerializeField] private float _currectSize = 0;
     [SerializeField] private bool _isDead;
 
@@ -24,13 +23,11 @@ public class PlayerInfo : MonoBehaviour
     private Heal _healScript;
     private FallingDamage _fallScript;
     private Movement _moveScript;
-    private Ability_Wind _windAbility;
+
     private Ability_Fire _fireAbility;
     private Ability_Water _waterAbility;
 
     public float CurrentSize => _currectSize;
-    public float JumpForce => _jumpForce;
-    public float CurrentJumpForce => _currentJumpForce;
     public float MaxHP => _hp;
     public float CurrentHP => _currentHp;
     public bool IsDead => _isDead;
@@ -41,12 +38,10 @@ public class PlayerInfo : MonoBehaviour
         _healScript = GetComponent<Heal>();
         _fallScript = GetComponent<FallingDamage>();
         _moveScript = GetComponent<Movement>();
-        _windAbility = GetComponent<Ability_Wind>();
         _fireAbility = GetComponent<Ability_Fire>();
         _waterAbility = GetComponent<Ability_Water>();
 
         _currentHp = _hp;
-        _currentJumpForce = _jumpForce;
     }
 
     // Update is called once per frame
@@ -95,15 +90,6 @@ public class PlayerInfo : MonoBehaviour
 
     private void ElementCheck()
     {
-        if(_windAbility.enabled)    //update jump force -> wind effect
-        {
-            _currentJumpForce = _windAbility.WindJumpForce;
-        }
-        else
-        {
-            _currentJumpForce = _jumpForce;
-        }
-
         if(_fireAbility.enabled)    //update hp -> fire effect
         {
             if(_fireAbility.BurnObject)
