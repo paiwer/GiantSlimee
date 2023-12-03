@@ -5,11 +5,6 @@ using System;
 
 public class Consume : MonoBehaviour
 {
-    [SerializeField] private PlayerInfo _playerInfo;
-    [SerializeField] private Ability_Fire _fire;
-    [SerializeField] private Ability_Water _water;
-    [SerializeField] private Ability_Wind _wind;
-
     [SerializeField] private bool _isOpenMouth;
 
     [SerializeField] private GameObject _element1;
@@ -20,7 +15,7 @@ public class Consume : MonoBehaviour
 
     [SerializeField] private float _dropDistance;
 
-    [SerializeField] private float _eatAmount = 1f;
+    [SerializeField] private float _currentEatAmount = 1f;
 
     [SerializeField] private int _gemNumber = 0;
 
@@ -34,19 +29,20 @@ public class Consume : MonoBehaviour
     [SerializeField] private string _splitSound = "Split";
 
     private GameObject _eatElement;
+
     private ElementInfo _eatElementInfo;
+    private Ability_Fire _fire;
+    private Ability_Water _water;
+    private Ability_Wind _wind;
 
     public ElementInfo ElementInfo1 => _elementInfo1;
     public ElementInfo ElementInfo2 => _elementInfo2;
-
-    public float EatAmount => _eatAmount;
-
+    public float EatAmount => _currentEatAmount;
     public int GemNumber => _gemNumber;
 
     // Start is called before the first frame update
     void Start()
     {
-        _playerInfo = gameObject.GetComponent<PlayerInfo>();
         _fire = GetComponent<Ability_Fire>();
         _water = GetComponent<Ability_Water>();
         _wind = GetComponent<Ability_Wind>();
@@ -81,7 +77,7 @@ public class Consume : MonoBehaviour
             lastestElement.transform.position = dropPos;
             _eatList.Remove(lastestElement);
 
-            _eatAmount -= lastestElementInfo.ElementWeight;
+            _currentEatAmount -= lastestElementInfo.ElementWeight;
 
             AudioManager.Instance.PlaySFX(_splitSound);
         }
@@ -102,7 +98,7 @@ public class Consume : MonoBehaviour
 
     private void EatedElementUpdate()
     {
-        if(_eatList.Count > 0)
+        if(_eatList.Count > 0)  //Have item in list = 1 or more
         {
             _element1 = _eatList[0];
             _elementInfo1 = _element1.GetComponent<ElementInfo>();
@@ -113,7 +109,7 @@ public class Consume : MonoBehaviour
             _elementInfo1 = null;
         }
 
-        if(_eatList.Count > 1)
+        if(_eatList.Count > 1)  //Have item in list = 2 or more
         {
             _element2 = _eatList[1];
             _elementInfo2 = _element2.GetComponent<ElementInfo>();
@@ -189,7 +185,7 @@ public class Consume : MonoBehaviour
         if (_eatElementInfo.Type != ElementInfo.ElementType.None)
         {
             _eatList.Add(_eatElement);
-            _eatAmount += _eatElementInfo.ElementWeight;
+            _currentEatAmount += _eatElementInfo.ElementWeight;
 
             AudioManager.Instance.PlaySFX(_eatSound);
         }

@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Ability_Wind : MonoBehaviour
 {
+    [SerializeField] private float _windJumpForce;
+
     private PlayerInfo _playerInfo;
     private Consume _consume;
-    [SerializeField] private float _windJumpForce;
 
     public float WindJumpForce => _windJumpForce;
 

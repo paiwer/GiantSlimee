@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class Ability_Fire : MonoBehaviour
 {
-    private PlayerInfo _playerInfo;
-    private Consume _consume;
-
     [SerializeField] private float _fireDamage;
     [SerializeField] private bool _burnObject;
     [SerializeField] private string _tagBurnable = "Burnable";
+
+    private Consume _consume;
 
     [Header("Sound")]
     [SerializeField] private string _burnSound = "Burn";
@@ -20,7 +19,6 @@ public class Ability_Fire : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _playerInfo = GetComponent<PlayerInfo>();
         _consume = GetComponent<Consume>();
     }
 

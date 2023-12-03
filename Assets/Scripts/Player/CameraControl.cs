@@ -25,7 +25,6 @@ public class CameraControl : MonoBehaviour
     private RaycastHit _obstacleHit;
     private PlayerInfo _playerInfo;
     private UIManager _uiManager;
-    private float _changedArmLength;
     private bool _hitObstacle;
 
     // Start is called before the first frame update
@@ -33,7 +32,6 @@ public class CameraControl : MonoBehaviour
     {
         _playerInfo = GetComponent<PlayerInfo>();
         _uiManager = FindObjectOfType<UIManager>();
-        _changedArmLength = _armLength;
     }
 
     // Update is called once per frame

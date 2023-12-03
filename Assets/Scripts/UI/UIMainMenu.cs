@@ -5,11 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class UIMainMenu : MonoBehaviour
 {
-    [SerializeField] private string _levelSceneName = "Level1";
+    [SerializeField] private string _LoadSceneName = "Level1";
 
-    public void PlayLevel1()
+    public void LoadScene()
     {
-        SceneManager.LoadScene(_levelSceneName);
+        SceneManager.LoadScene(_LoadSceneName);
     }
     public void QuitGame()
     {

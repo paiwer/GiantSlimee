@@ -13616,6 +13616,11 @@ PrefabInstance:
       propertyPath: _timeThreshold
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 8742448644678652105, guid: ee28669c089eb91469ff6773b4a734bc,
+        type: 3}
+      propertyPath: _standardSize
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8742448644678652106, guid: ee28669c089eb91469ff6773b4a734bc,
         type: 3}
       propertyPath: _maxRotate
@@ -13635,6 +13640,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _moveSpeed
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8742448644678652107, guid: ee28669c089eb91469ff6773b4a734bc,
+        type: 3}
+      propertyPath: _playerInfo
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8742448644678652107, guid: ee28669c089eb91469ff6773b4a734bc,
         type: 3}

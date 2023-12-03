@@ -4,16 +4,15 @@ using UnityEngine;
 
 public class Ability_Water : MonoBehaviour
 {
-    private PlayerInfo _playerInfo;
-    private Movement _movement;
-    private Consume _consume;
-
     [SerializeField] private float _waterMoveSpeed;
     [SerializeField] private float _waterDamage;
     [SerializeField] private float _timeThreshold;
     [SerializeField] private bool _takeWaterDamage;
 
     private float _timeCount;
+
+    private Movement _movement;
+    private Consume _consume;
 
     public float WaterMoveSpeed => _waterMoveSpeed;
     public float WaterDamage => _waterDamage;

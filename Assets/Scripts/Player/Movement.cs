@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    [SerializeField] private PlayerInfo _playerInfo;
-
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _currentMoveSpeed;
     [SerializeField] private bool _onGround;
     [SerializeField] private bool _onJumpPad;
     [SerializeField] private bool _isJump;
     [SerializeField] private bool _isMove;
-    [SerializeField] private float _groundCheckDistance = 1;
+    [SerializeField] private float _groundCheckLength = 1;
 
     [SerializeField] private LayerMask _groundLayer;
     [SerializeField] private LayerMask _jumpPadLayer;
@@ -21,8 +19,9 @@ public class Movement : MonoBehaviour
     [SerializeField] private string _jumpSound = "Jump";
 
     private Ability_Water _waterAbility;
-
+    private PlayerInfo _playerInfo;
     private Rigidbody _rigidbody;
+
     public float MoveSpeed => _moveSpeed;
     public bool IsMove => _isMove;
     public bool IsJump => _isJump;
@@ -35,22 +34,23 @@ public class Movement : MonoBehaviour
     {
        _rigidbody = gameObject.GetComponent<Rigidbody>();
        _waterAbility = GetComponent<Ability_Water>();
+       _playerInfo = GetComponent<PlayerInfo>();
 
-       _currentMoveSpeed = _moveSpeed;
+        _currentMoveSpeed = _moveSpeed;
     }
 
     // Update is called once per frame
     void Update()
     {
-        GroundCheck();
         Jump();
+
+        GroundCheck();
+        ElementCheck();
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         Move();
-
-        ElementCheck();
     }
 
     private void Move()
@@ -119,13 +119,19 @@ public class Movement : MonoBehaviour
 
     private void GroundCheck()
     {
-        float currentDistance = _groundCheckDistance * _playerInfo.CurrentSize;
+        float currentDistance = _groundCheckLength * _playerInfo.CurrentSize;
 
-        RaycastHit hit;
-        _onGround = Physics.Raycast(transform.position, Vector3.down, out hit, currentDistance, _groundLayer);
+        RaycastHit groundHit;
+        _onGround = RaycastFromBody(out groundHit, currentDistance, _groundLayer);
 
-        _onJumpPad = Physics.Raycast(transform.position, Vector3.down, out hit, currentDistance, _jumpPadLayer);
+        RaycastHit jumpPadHit;
+        _onJumpPad = RaycastFromBody(out jumpPadHit, currentDistance,_jumpPadLayer);
 
         Debug.DrawRay(transform.position, Vector3.down * currentDistance, Color.red);  //Draw line
+    }
+
+    private bool RaycastFromBody(out RaycastHit hitInfo, float distance, LayerMask layerMask)
+    {
+        return Physics.Raycast(transform.position, Vector3.down, out hitInfo, distance, layerMask);
     }
 }

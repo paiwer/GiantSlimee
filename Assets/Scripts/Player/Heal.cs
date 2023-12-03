@@ -4,28 +4,16 @@ using UnityEngine;
 
 public class Heal : MonoBehaviour
 {
-    [SerializeField] private HealPad _healPad;
-    [SerializeField] private float _healAmount;
-
     [Header("Sound")]
     [SerializeField] private string _healSound = "Heal";
 
     private bool _isHeal;
+    private float _healAmount;
+
+    private HealPad _healPad;
 
     public float HealAmount => _healAmount;
     public bool IsHeal => _isHeal;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void OnCollisionEnter(Collision collision)
     {

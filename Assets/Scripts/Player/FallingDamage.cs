@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class FallingDamage : MonoBehaviour
 {
-    private Movement _movementScript;
-
     [SerializeField] private float _fallingThreshold = 12;
     [SerializeField] private float _damageMultiplier = 5;
     [SerializeField] private bool _takeFallDamage;
 
-    private Rigidbody _rigidbody;
+    private float _fallDamage;
 
-    [SerializeField] private float _fallDamage;
+    private Rigidbody _rigidbody;
+    private Movement _movementScript;
 
     public float FallDamage => _fallDamage;
     public bool TakeFallDamage => _takeFallDamage;
@@ -24,7 +23,7 @@ public class FallingDamage : MonoBehaviour
         _movementScript = GetComponent<Movement>();
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         if (_rigidbody.velocity.y < -_fallingThreshold)
         {
@@ -37,7 +36,6 @@ public class FallingDamage : MonoBehaviour
             _takeFallDamage = false;
         }
     }
-
 
     public void _IsTakeFallDamage(bool isTakeDamage)
     {

@@ -10,10 +10,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _pauseUI;
     [SerializeField] private string _mainMenuSceneName = "MainMenu";
 
+    private bool _isPaused = false;
+
     private PlayerInfo _playerInfoScript;
     private WinPlate _winPlateScript;
 
-    private bool _isPaused = false;
     public bool IsPaused => _isPaused;
 
     // Start is called before the first frame update

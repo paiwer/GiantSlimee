@@ -8,16 +8,16 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField] private float _currentHp = 0;
     [SerializeField] private float _jumpForce = 0;
     [SerializeField] private float _currentJumpForce = 0;
-    [SerializeField] private float _standardSize = 1;
-    [SerializeField] private float _currectSizeNumber = 0;
-    [SerializeField] private float _minSize;
-    [SerializeField] private float _eatAmount;
+    [SerializeField] private float _currectSize = 0;
     [SerializeField] private bool _isDead;
 
     [Header("Sound")]
     [SerializeField] private string _dieSound = "Die";
 
+    private float _eatAmount;
     private float _healNumber;
+
+    private bool _playDieSound = true;
 
     private Vector3 _size;
 
@@ -28,9 +28,7 @@ public class PlayerInfo : MonoBehaviour
     private Ability_Fire _fireAbility;
     private Ability_Water _waterAbility;
 
-    bool _playDieSound = true;
-
-    public float CurrentSize => _currectSizeNumber;
+    public float CurrentSize => _currectSize;
     public float JumpForce => _jumpForce;
     public float CurrentJumpForce => _currentJumpForce;
     public float MaxHP => _hp;
@@ -70,7 +68,7 @@ public class PlayerInfo : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         TakeFallDamage();
     }
@@ -79,9 +77,9 @@ public class PlayerInfo : MonoBehaviour
     {
         _eatAmount = GetComponent<Consume>().EatAmount;
 
-        _currectSizeNumber = _eatAmount;
+        _currectSize = _eatAmount;
 
-        _size = new Vector3(_currectSizeNumber, _currectSizeNumber, _currectSizeNumber);
+        _size = new Vector3(_currectSize, _currectSize, _currectSize);
 
         transform.localScale = _size;
     }

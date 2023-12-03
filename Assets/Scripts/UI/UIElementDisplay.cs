@@ -15,21 +15,22 @@ public class UIElementDisplay : MonoBehaviour
     [SerializeField] private Image _e2Wind;
     [SerializeField] private Image _e2None;
 
-    [SerializeField] private Consume _consumeScript;
+    private Consume _consume;
+
     private ElementInfo _element1;
     private ElementInfo _element2;
 
     // Start is called before the first frame update
     void Start()
     {
-        _consumeScript = FindObjectOfType<Consume>();
+        _consume = FindObjectOfType<Consume>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        _element1 = _consumeScript.ElementInfo1;
-        _element2 = _consumeScript.ElementInfo2;
+        _element1 = _consume.ElementInfo1;
+        _element2 = _consume.ElementInfo2;
 
         ElementDisplay();
     }

@@ -18,7 +18,7 @@ public class UIHpBar : MonoBehaviour
     private PlayerInfo _playerInfo;
 
     private float _currentFillAmount;
-    private float timer;
+    private float _timer;
 
     private float _previousHp;
 
@@ -70,7 +70,7 @@ public class UIHpBar : MonoBehaviour
 
     private void SetAnimTimer()
     {
-        timer = Time.time + _animDelay;
+        _timer = Time.time + _animDelay;
     }
 
     private void SetTakeDamageFalse()
@@ -106,20 +106,25 @@ public class UIHpBar : MonoBehaviour
 
     private void HealthBarAnim()
     {
-        if (Time.time > timer)
+        if (Time.time > _timer)
         {
             if (_hpBar.fillAmount != _currentFillAmount)
             {
-                _hpBar.fillAmount = Mathf.MoveTowards(_hpBar.fillAmount, _currentFillAmount, _animSpeed * Time.deltaTime);
+                SetBarFillAmount(_hpBar);
             }
             if (_healBar.fillAmount != _currentFillAmount)
             {
-                _healBar.fillAmount = Mathf.MoveTowards(_healBar.fillAmount, _currentFillAmount, _animSpeed * Time.deltaTime);
+                SetBarFillAmount(_healBar);
             }
             if (_damageBar.fillAmount != _currentFillAmount)
             {
-                _damageBar.fillAmount = Mathf.MoveTowards(_damageBar.fillAmount, _currentFillAmount, _animSpeed * Time.deltaTime);
+                SetBarFillAmount(_damageBar);
             }
         }
+    }
+
+    private void SetBarFillAmount(Image bar)
+    {
+        bar.fillAmount = Mathf.MoveTowards(bar.fillAmount, _currentFillAmount, _animSpeed * Time.deltaTime);
     }
 }

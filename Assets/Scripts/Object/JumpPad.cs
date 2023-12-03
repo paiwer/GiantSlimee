@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class JumpPad : MonoBehaviour
 {
-    [SerializeField] const string _tagPlayer = "Player";
+    [SerializeField] private string _tagPlayer = "Player";
     [SerializeField] private float _jumpForce;
 
     [Header("Sound")]
@@ -12,24 +12,11 @@ public class JumpPad : MonoBehaviour
 
     private Rigidbody _rb;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == _tagPlayer)
         {
-            GameObject player = other.gameObject;
-            _rb = player.GetComponent<Rigidbody>();
+            _rb = other.gameObject.GetComponent<Rigidbody>();
 
             LaunchPlayer();
 

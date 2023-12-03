@@ -6,19 +6,19 @@ using TMPro;
 public class UIGemDisplay : MonoBehaviour
 {
     [SerializeField] private TMP_Text _gemText;
-    [SerializeField] private string _form = "x ";
+    [SerializeField] private string _frontTextFormat = "x ";
 
-    private Consume _consumeScript;
+    private Consume _consume;
 
     // Start is called before the first frame update
     void Start()
     {
-        _consumeScript = FindObjectOfType<Consume>();
+        _consume = FindObjectOfType<Consume>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        _gemText.text = _form + _consumeScript.GemNumber;
+        _gemText.text = _frontTextFormat + _consume.GemNumber;
     }
 }
